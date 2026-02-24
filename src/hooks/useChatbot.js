@@ -34,20 +34,28 @@ const useChatbot = create((set, get) => ({
   },
   status: "idle",
   messages: [],
-  sendMessage: (message) => {
+  sendMessage: async (message) => {
+    const api = import.meta.env.VITE_API_URL;
+
     set((state) => ({
       messages: [...state.messages, { text: message, sender: "user" }],
       status: "loading",
     }));
-    setTimeout(() => {
-      set((state) => ({
-        messages: [
-          ...state.messages,
-          { text: "This is a response from the chatbot.", sender: "bot" },
-        ],
-        status: "idle",
-      }));
-    }, 1000);
+
+    const r = await fetch(
+      `${api}/chat?message=${encodeURIComponent(message)}&sessionId=${encodeURIComponent(
+        get().sessionId,
+      )}`,
+    );
+    const result = await r.json();
+
+    set((state) => ({
+      messages: [...state.messages, { text: result.output, sender: "bot" }],
+      status: "idle",
+    }));
+
+    // reproducir audio
+    get().playAudio(`${api}/tts?message=${encodeURIComponent(result.output)}`);
   },
 }));
 
