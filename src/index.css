@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&display=swap");
 @import "tailwindcss";
 
 #root {
@@ -7,4 +8,15 @@
 
 body {
   margin: 0;
+}
+
+/* Ocultar scrollbar (Chrome, Safari) */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Ocultar scrollbar (Firefox) */
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE/Edge viejo */
+  scrollbar-width: none; /* Firefox */
 }
