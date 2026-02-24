@@ -1,5 +1,5 @@
 {
-  "name": "r3f-vite-starter",
+  "name": "santa-chat-3d",
   "private": true,
   "version": "1.0.0",
   "type": "module",
@@ -11,15 +11,21 @@
   "dependencies": {
     "@react-three/drei": "^10.0.3",
     "@react-three/fiber": "^9.0.4",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "three": "^0.173.0"
+    "@tailwindcss/vite": "^4.2.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-icons": "^5.5.0",
+    "tailwindcss": "^4.2.1",
+    "three": "^0.173.0",
+    "wawa-lipsync": "^0.0.2",
+    "zustand": "^5.0.11"
   },
   "devDependencies": {
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
     "globals": "^15.15.0",
+    "lightningcss": "^1.24.1",
     "vite": "^6.2.0"
   }
 }
