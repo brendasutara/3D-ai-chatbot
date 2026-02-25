@@ -1,17 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
-  <defs>
-    <linearGradient id="hat" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#e53935" />
-      <stop offset="1" stop-color="#b71c1c" />
-    </linearGradient>
-  </defs>
   <rect width="128" height="128" fill="transparent" />
-  <circle cx="64" cy="74" r="34" fill="#f7e0d2" />
-  <path d="M32 58 L96 58 L64 18 Z" fill="url(#hat)" />
-  <rect x="34" y="54" width="60" height="12" rx="6" fill="#ffffff" />
-  <circle cx="94" cy="24" r="8" fill="#ffffff" />
-  <circle cx="52" cy="74" r="5" fill="#1f1f1f" />
-  <circle cx="76" cy="74" r="5" fill="#1f1f1f" />
-  <circle cx="64" cy="84" r="7" fill="#e57373" />
-  <path d="M34 92 C44 108, 84 108, 94 92" fill="#ffffff" />
+  <circle cx="64" cy="70" r="36" fill="#ffe08a" />
+  <ellipse cx="54" cy="80" rx="16" ry="12" fill="#ffd166" />
+  <circle cx="54" cy="64" r="5" fill="#1f1f1f" />
+  <circle cx="56" cy="62" r="2" fill="#ffffff" />
+  <path d="M68 70 L88 64 L88 76 Z" fill="#ff9f1c" />
+  <circle cx="46" cy="74" r="4" fill="#ffb3c1" />
+  <path d="M56 32 C62 40, 70 42, 76 38" stroke="#ffd166" stroke-width="6" stroke-linecap="round" fill="none" />
 </svg>

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+﻿import { useEffect, useRef, useState } from "react";
 import { IoSend, IoVolumeHigh, IoVolumeMute } from "react-icons/io5";
 import { ImSpinner2 } from "react-icons/im";
 import useChatbot from "../hooks/useChatbot";
@@ -34,19 +34,29 @@ export const UI = () => {
         type="button"
         onClick={toggleAudio}
         aria-label={isAudioEnabled ? "Desactivar voz" : "Activar voz"}
-        title={isAudioEnabled ? "Silenciar voz del asistente" : "Activar voz del asistente"}
+        title={
+          isAudioEnabled
+            ? "Silenciar voz del asistente"
+            : "Activar voz del asistente"
+        }
         className="pointer-events-auto absolute right-4 top-4 sm:right-6 sm:top-6 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/35 bg-black/35 text-xl text-white backdrop-blur-md transition hover:bg-black/50 focus:outline-none focus:ring-2 focus:ring-white/70"
       >
-        {isAudioEnabled ? <IoVolumeHigh className="h-5 w-5" /> : <IoVolumeMute className="h-5 w-5" />}
+        {isAudioEnabled ? (
+          <IoVolumeHigh className="h-5 w-5" />
+        ) : (
+          <IoVolumeMute className="h-5 w-5" />
+        )}
       </button>
 
       {/* HEADER */}
       <header className="pointer-events-none mt-6 text-center select-none">
         <h1 className="font-santa text-4xl sm:text-5xl font-extrabold tracking-tight text-white drop-shadow">
-          Santa AI <span className="inline-block">🎄</span>
+          PíoPío AI
         </h1>
         <p className="mt-2 text-base sm:text-lg text-white/90 drop-shadow">
-          Pregúntale qué quieres para Navidad
+          ¡Hola! Soy un pajarito tierno que responde con cariño y claridad.{" "}
+          <br />
+          Pregúntame lo que quieras y lo piamos juntos.
         </p>
       </header>
 
@@ -66,8 +76,8 @@ export const UI = () => {
               <div
                 className={`max-w-[80%] px-3 py-2 rounded-2xl text-sm leading-relaxed ${
                   message.sender === "user"
-                    ? "bg-black/20 border border-black/20 text-white rounded-br-md"
-                    : "bg-white/20 border border-white/50 text-white rounded-bl-md"
+                    ? "bg-[#3a2416]/80 border border-[#5a3b22]/70 text-[#fff4e4] rounded-br-md"
+                    : "bg-[#1f140c]/70 border border-[#3b2a1c]/70 text-[#ffe7c7] rounded-bl-md"
                 }`}
               >
                 {message.text}
@@ -83,13 +93,13 @@ export const UI = () => {
               onChange={(event) => setInput(event.target.value)}
               placeholder="Escribe un mensaje..."
               disabled={isLoading}
-              className="w-full rounded-full text-white bg-black/20 border placeholder:text-gray-300 border-black/20 pl-3 pr-12 py-2 text-sm outline-none focus:ring-2 focus:ring-red-900 disabled:bg-black/40"
+              className="w-full rounded-full text-[#fff3e0] bg-[#2b1a10]/80 border placeholder:text-[#e9d2b2] border-[#4a2f1c]/70 pl-3 pr-12 py-2 text-sm outline-none focus:ring-2 focus:ring-[#ffb27d]/60 disabled:bg-[#22150d]/70"
             />
             <button
               type="submit"
               disabled={isLoading || !input.trim()}
               aria-label={isLoading ? "Enviando mensaje" : "Enviar mensaje"}
-              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md p-2 text-white/50 hover:text-white disabled:opacity-60 disabled:hover:bg-transparent"
+              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md p-2 text-[#ffd9b0]/80 hover:text-[#fff2df] disabled:opacity-60 disabled:hover:bg-transparent"
             >
               {isLoading ? (
                 <ImSpinner2 className="h-5 w-5 animate-spin" />
@@ -103,4 +113,3 @@ export const UI = () => {
     </main>
   );
 };
-

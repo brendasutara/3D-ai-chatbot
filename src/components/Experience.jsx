@@ -1,22 +1,59 @@
-import { Environment, OrbitControls, useTexture } from "@react-three/drei";
-import { Character } from "./Character";
-import { Gltf } from "@react-three/drei";
-import { degToRad } from "three/src/math/MathUtils.js";
-import { AppearanceMode, VFXEmitter, VFXParticles } from "wawa-vfx";
+import { useGLTF } from "@react-three/drei";
 import { CameraManager } from "./CameraManager";
+import { Character } from "./Character";
+import { degToRad } from "three/src/math/MathUtils.js";
+import { useRef } from "react";
+import { AppearanceMode, VFXEmitter, VFXParticles } from "wawa-vfx";
+
+const SceneModel = ({ position }) => {
+  const group = useRef();
+  const { scene } = useGLTF("/models/stylized_hand_painted_scene.glb");
+
+  return <primitive ref={group} object={scene} position={position} />;
+};
 
 export const Experience = () => {
-  const snowTexture = useTexture("textures/star_07.png");
+  const characterTransform = {
+    x: 0,
+    y: -1.1,
+    z: 0,
+    scale: 8,
+    rotationX: 0,
+    rotationY: 10,
+    rotationZ: 0,
+  };
+  const sceneTransform = {
+    x: 48,
+    y: -18.5,
+    z: 48,
+    scale: 1,
+    rotationX: 0,
+    rotationY: 0,
+    rotationZ: 0,
+  };
+
   return (
     <>
       <CameraManager />
-      <Character rotation-y={degToRad(10)} scale={0.6} />
+      <Character
+        rotation={[
+          degToRad(characterTransform.rotationX),
+          degToRad(characterTransform.rotationY),
+          degToRad(characterTransform.rotationZ),
+        ]}
+        scale={characterTransform.scale}
+        position={[
+          characterTransform.x,
+          characterTransform.y,
+          characterTransform.z,
+        ]}
+      />
 
-      <OrbitControls />
+      <ambientLight intensity={0.7} color="#ffd6a1" />
       <directionalLight
         position={[-3, 3, 10]}
-        intensity={2.5}
-        color={"white"}
+        intensity={2.2}
+        color={"#ffe3b0"}
         castShadow
         shadow-bias={0.005}
         shadow-mapSize-width={128}
@@ -30,10 +67,14 @@ export const Experience = () => {
       />
       <directionalLight
         position={[3, 3, 10]}
-        intensity={1.2}
-        color={"mediumpurple"}
+        intensity={1.0}
+        color={"#ffb27d"}
       />
-      <directionalLight position={[0, 0, -10]} intensity={9} color={"orange"} />
+      <directionalLight
+        position={[0, 0, -10]}
+        intensity={7.5}
+        color={"#ff8a4c"}
+      />
 
       <mesh
         position-z={-5}
@@ -44,42 +85,30 @@ export const Experience = () => {
         <planeGeometry args={[10, 10]} />
         <shadowMaterial color="#21282a" opacity={0.6} />
       </mesh>
-      <Gltf
-        rotation-y={degToRad(-20)}
-        position-y={7.72}
-        src="models/lowp_-_christmas_-_cc0_asset_pack-opt.glb"
-      />
-
-      <VFXParticles
-        name="snow"
-        settings={{
-          nbParticles: 10000,
-          gravity: [1, -3, 0],
-          renderMode: "billboard",
-          appearance: AppearanceMode.Circular,
-          intensity: 18,
-          fadeSize: [0, 0.5],
-          fadeAlpha: [0, 0],
-        }}
-        alphaMap={snowTexture}
-      />
-      <VFXEmitter
-        emitter="snow"
-        settings={{
-          duration: 2,
-          nbParticles: 1000,
-          loop: true,
-          spawnMode: "time",
-          startPositionMin: [-20, 25, -50],
-          startPositionMax: [10, 20, 50],
-          directionMin: [-5, 0, 5],
-          directionMax: [5, -1, 5],
-          particlesLifetime: [0.5, 5],
-          speed: [0.1, 4],
-          size: [0.01, 1],
-          colorStart: ["white", "skyblue", "#fff98b"],
-        }}
-      />
+      <group
+        rotation={[
+          degToRad(sceneTransform.rotationX),
+          degToRad(sceneTransform.rotationY),
+          degToRad(sceneTransform.rotationZ),
+        ]}
+        position={[sceneTransform.x, sceneTransform.y, sceneTransform.z]}
+        scale={[
+          sceneTransform.scale,
+          sceneTransform.scale,
+          sceneTransform.scale,
+        ]}
+      >
+        <mesh
+          position-z={-5}
+          position-y={0.05}
+          receiveShadow
+          rotation-x={-Math.PI / 2}
+        >
+          <planeGeometry args={[10, 10]} />
+          <shadowMaterial color="#21282a" opacity={0.6} />
+        </mesh>
+        <SceneModel position={[0, 0, 0]} />
+      </group>
     </>
   );
 };

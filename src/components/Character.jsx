@@ -1,13 +1,17 @@
 import { useAnimations, useGLTF } from "@react-three/drei";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import useChatbot from "../hooks/useChatbot";
 import { useFrame } from "@react-three/fiber";
 import { VISEMES } from "wawa-lipsync";
 import { lerp } from "three/src/math/MathUtils.js";
+import { Box3, Vector3 } from "three";
 
 export const Character = ({ ...props }) => {
-  const { scene, animations } = useGLTF("/models/Santa.glb");
+  const MODEL_PATH = "/models/bird_orange.glb";
+  const SPELL_ANIMATION_NAME = "anim";
+  const { scene, animations } = useGLTF(MODEL_PATH);
   const { actions } = useAnimations(animations, scene);
+  const currentActionRef = useRef(null);
 
   // Estado del store
   const lipsyncManager = useChatbot((state) => state.lipsyncManager);
@@ -41,9 +45,48 @@ export const Character = ({ ...props }) => {
     [avatarSkinnedMeshes],
   );
 
+  const resetToBindPose = useCallback(() => {
+    scene.traverse((child) => {
+      if (child.isSkinnedMesh && child.skeleton) {
+        child.skeleton.pose();
+      }
+    });
+  }, [scene]);
+
   useEffect(() => {
-    actions["Idle"]?.reset().play();
-  }, [actions]);
+    const spellAction = actions[SPELL_ANIMATION_NAME];
+    if (!spellAction) {
+      if (animations?.length > 0) {
+        console.warn(
+          `[Character] No se encontro la animacion '${SPELL_ANIMATION_NAME}'. Disponibles:`,
+          animations.map((a) => a.name),
+        );
+      }
+      return;
+    }
+
+    const previousAction = currentActionRef.current;
+
+    if (isSpeaking) {
+      if (previousAction !== spellAction) {
+        spellAction.reset().fadeIn(0.2).play();
+        previousAction?.fadeOut(0.2);
+        currentActionRef.current = spellAction;
+      }
+      return;
+    }
+
+    if (previousAction) {
+      previousAction.fadeOut(0.2);
+      previousAction.stop();
+      currentActionRef.current = null;
+    }
+    resetToBindPose();
+
+    return () => {
+      spellAction.fadeOut(0.2);
+    };
+  }, [actions, animations, isSpeaking, resetToBindPose]);
 
   const availableVisemes = useMemo(() => {
     const set = new Set();
@@ -57,6 +100,16 @@ export const Character = ({ ...props }) => {
     });
     return Array.from(set);
   }, [avatarSkinnedMeshes]);
+
+  useEffect(() => {
+    const bounds = new Box3().setFromObject(scene);
+    if (bounds.isEmpty()) return;
+
+    const center = bounds.getCenter(new Vector3());
+    scene.position.x -= center.x;
+    scene.position.z -= center.z;
+    scene.position.y -= bounds.min.y;
+  }, [scene]);
 
   useFrame(() => {
     if (availableVisemes.length === 0) return;
@@ -103,4 +156,4 @@ export const Character = ({ ...props }) => {
   );
 };
 
-useGLTF.preload("/models/Santa.glb");
+useGLTF.preload("/models/bird_orange.glb");
